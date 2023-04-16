@@ -1,8 +1,9 @@
-/* eslint-disable react/react-in-jsx-scope */
 import "./App.css";
 import { useState, useEffect } from "react";
 import getCoordinate from "./helper/getCoordinate";
 import findProjects from "./helper/findProjects";
+
+import ProjectCard from "./components/ProjectCard";
 
 function App() {
   const [projects, setProjects] = useState([]);
@@ -12,27 +13,23 @@ function App() {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       let coordinate = getCoordinate(location);
-      if(coordinate === false)
-      {
-        setAlertText("please enter correct location")
+      if (coordinate === false) {
+        setAlertText("please enter correct location");
         setProjects([]);
-      }
-      else
-      {
+      } else {
         let result = findProjects(getCoordinate(location));
         setLocation("");
-        if(result.length) setProjects(result);
+        if (result.length) setProjects(result);
         else setProjects([]);
       }
     }
   };
 
   useEffect(() => {
-    if(location === "")
-    {
+    if (location === "") {
       setAlertText("please enter location");
     }
-  }, [location])
+  }, [location]);
 
   return (
     <div className="p-5">
@@ -41,7 +38,11 @@ function App() {
       </h2>
       <div className="mt-5 rounded-2xl max-w-[605px] w-[100%] mx-auto p-[30px] shadow-md flex flex-col bg-[#131823]">
         <div className="rounded-2xl max-w-[300px] w-[100%] mx-auto flex p-3 bg-[#06070a]">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2-KnEFXk9XQDENBtqNM7KWs445vaL43ogtg&usqp=CAU" alt="searchIcon" width="30px" />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2-KnEFXk9XQDENBtqNM7KWs445vaL43ogtg&usqp=CAU"
+            alt="searchIcon"
+            width="30px"
+          />
           <input
             placeholder="Search Location"
             className="ml-5 bg-[#06070a] outline-0"
@@ -51,10 +52,7 @@ function App() {
         </div>
         {projects.length ? (
           projects.map((project, index) => (
-            <div key={index} className="border border-[#202835] rounded-2xl mt-3 p-5">
-              <h2 className="text-[23px]">{project.location}</h2>
-              <h2 className="text-[#3e78ad]">{project.distance} km</h2>
-            </div>
+            <ProjectCard index={index} project={project} />
           ))
         ) : (
           <div className="text-center mt-5">
